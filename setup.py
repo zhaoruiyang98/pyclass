@@ -265,7 +265,7 @@ if __name__ == '__main__':
           license='GPL3',
           url='http://github.com/adematti/pyclass',
           install_requires=['numpy', 'cython'],
-          ext_modules=[Extension(**classy_extension_config(branch)) for branch in find_branches()],
+          ext_modules=[Extension(**classy_extension_config(branch)) for branch in ['base']],
           cmdclass={'build_ext': custom_build_ext,
                     'develop': custom_develop,
                     'clean': custom_clean},
