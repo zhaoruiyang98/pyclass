@@ -965,6 +965,11 @@ cdef class Background:
         return self._get_z(z, self.ba.index_bg_conf_distance) * self.ba.h
 
     @flatarray()
+    def comoving_sound_horizon(self, z):
+        r"""Comoving sound horizon at redshift ``z``, in :math:`\mathrm{Mpc}/h`."""
+        return self._get_z(z, self.ba.index_bg_rs) * self.ba.h
+
+    @flatarray()
     def conformal_time(self, z):
         r"""Conformal time, in :math:`\mathrm{Gy}`."""
         return (self.ba.conformal_age - self._get_z(z, self.ba.index_bg_conf_distance)) / _Gyr_over_Mpc_
@@ -1013,13 +1018,15 @@ cdef class Background:
         return self._get_z(z, self.ba.index_bg_ang_distance) * self.ba.h
 
     @flatarray()
-    def comoving_angular_distance(self, z):
+    def comoving_transverse_distance(self, z):
         r"""
         Comoving angular distance, in :math:`\mathrm{Mpc}/h`.
 
         See eq. 16 of `astro-ph/9905116 <https://arxiv.org/abs/astro-ph/9905116>`_ for :math:`D_{M}(z)`.
         """
         return self.angular_diameter_distance(z) * (1. + z)
+
+    comoving_angular_distance = comoving_transverse_distance  # backward compatibility
 
     @flatarray(iargs=[0, 1])
     def angular_diameter_distance_2(self, z1, z2):
@@ -1096,7 +1103,6 @@ cdef class Thermodynamics:
     cdef ClassEngine engine
     cdef thermodynamics * th
     cdef background * ba
-
     def __init__(self, ClassEngine engine):
         r"""
         Initialise :class:`Thermodynamics`.
